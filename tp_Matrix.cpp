@@ -56,8 +56,8 @@ namespace tp {
   }
 
   Matrix Matrix::Translation(double x,double y,double z) {
-    Matrix mat;
-    mat.clear();
+    Matrix mat = Matrix::Identity;
+    // mat.clear();
     mat.get(0,3) = x;
     mat.get(1,3) = y;
     mat.get(2,3) = z;
@@ -70,25 +70,11 @@ namespace tp {
 
   Matrix  Matrix::Mult(const Matrix& a, const Matrix& b) {
     Matrix mat;
-    mat.get(0,0) = a.get(0,0)*b.get(0,0) + a.get(0,1)*b.get(0,1) + a.get(0,2)*b.get(0,2) + a.get(0,3)*b.get(0,3);
-    mat.get(0,1) = a.get(0,0)*b.get(1,0) + a.get(0,1)*b.get(1,1) + a.get(0,2)*b.get(1,2) + a.get(0,3)*b.get(1,3);
-    mat.get(0,2) = a.get(0,0)*b.get(2,0) + a.get(0,1)*b.get(2,1) + a.get(0,2)*b.get(2,2) + a.get(0,3)*b.get(2,3);
-    mat.get(0,3) = a.get(0,0)*b.get(3,0) + a.get(0,1)*b.get(3,1) + a.get(0,2)*b.get(3,2) + a.get(0,3)*b.get(3,3);
-    
-    mat.get(1,0) = a.get(1,0)*b.get(0,0) + a.get(1,1)*b.get(0,1) + a.get(1,2)*b.get(0,2) + a.get(1,3)*b.get(0,3);
-    mat.get(1,1) = a.get(1,0)*b.get(1,0) + a.get(1,1)*b.get(1,1) + a.get(1,2)*b.get(1,2) + a.get(1,3)*b.get(1,3);
-    mat.get(1,2) = a.get(1,0)*b.get(2,0) + a.get(1,1)*b.get(2,1) + a.get(1,2)*b.get(2,2) + a.get(1,3)*b.get(2,3);
-    mat.get(1,3) = a.get(1,0)*b.get(3,0) + a.get(1,1)*b.get(3,1) + a.get(1,2)*b.get(3,2) + a.get(1,3)*b.get(3,3);
-    
-    mat.get(2,0) = a.get(2,0)*b.get(0,0) + a.get(2,1)*b.get(0,1) + a.get(2,2)*b.get(0,2) + a.get(2,3)*b.get(0,3);
-    mat.get(2,1) = a.get(2,0)*b.get(1,0) + a.get(2,1)*b.get(1,1) + a.get(2,2)*b.get(1,2) + a.get(2,3)*b.get(1,3);
-    mat.get(2,2) = a.get(2,0)*b.get(2,0) + a.get(2,1)*b.get(2,1) + a.get(2,2)*b.get(2,2) + a.get(2,3)*b.get(2,3);
-    mat.get(2,3) = a.get(2,0)*b.get(3,0) + a.get(2,1)*b.get(3,1) + a.get(2,2)*b.get(3,2) + a.get(2,3)*b.get(3,3);
-    
-    mat.get(3,0) = a.get(3,0)*b.get(0,0) + a.get(3,1)*b.get(0,1) + a.get(3,2)*b.get(0,2) + a.get(3,3)*b.get(0,3);
-    mat.get(3,1) = a.get(3,0)*b.get(1,0) + a.get(3,1)*b.get(1,1) + a.get(3,2)*b.get(1,2) + a.get(3,3)*b.get(1,3);
-    mat.get(3,2) = a.get(3,0)*b.get(2,0) + a.get(3,1)*b.get(2,1) + a.get(3,2)*b.get(2,2) + a.get(3,3)*b.get(2,3);
-    mat.get(3,3) = a.get(3,0)*b.get(3,0) + a.get(3,1)*b.get(3,1) + a.get(3,2)*b.get(3,2) + a.get(3,3)*b.get(3,3);
+    for(int i = 0; i < 4; i++) {      
+      for (int j= 0; j < 4; j++) {
+	mat.get(i,j) = a.get(i,0)*b.get(0,j) + a.get(i,1)*b.get(1,j) + a.get(i,2)*b.get(2,j) + a.get(i,3)*b.get(3,j);
+      }
+    }
     return mat;    
   }
 
@@ -118,7 +104,7 @@ namespace tp {
   }
 
   Matrix& Matrix::translate(QVector3D v) {
-    Matrix mat = *this + Translation(v);
+    Matrix mat = *this * Translation(v);
     Copy(mat,this);
     return *this;
   }

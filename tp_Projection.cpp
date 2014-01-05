@@ -69,7 +69,6 @@ namespace tp {
   }
 
   QVector3D Projection::getScreenCoordinatesFromFrustum(const QVector3D& vec) {
-    std::cout << mCameraMatrix << std::endl;
     QVector4D g  = (mFrustumProjectionMatrix*(mCameraMatrix*(mModelMatrix*vec))).toVector3DAffine();
     return QVector3D( (g.x()*0.5+0.5)*mWidth, mHeight - (g.y()*0.5+0.5)*mHeight,  (1.0+g.z())*0.5);
   }

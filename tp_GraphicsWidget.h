@@ -10,6 +10,8 @@
 
 namespace tp {
 
+  class GraphicsItem;
+
   class GraphicsWidget: public QWidget {
     Q_OBJECT
   public:
@@ -30,6 +32,7 @@ namespace tp {
   private:
     void paintOrigin();
     void paintTree();
+    void paintChildren(GraphicsItem* item);
     void paintInfo();
 
   private:    

@@ -18,6 +18,8 @@ namespace tp {
   }
  
   void GraphicsItem::draw(QPainter* painter) {
+
+    Q_ASSERT(mGraphicsWidget != 0);
     QVector3D v1 = mGraphicsWidget->toScreenCoordinates(QVector3D(-1.0, -1.0, -1.0));
     QVector3D v2 = mGraphicsWidget->toScreenCoordinates(QVector3D( 1.0, -1.0, -1.0));
     QVector3D v3 = mGraphicsWidget->toScreenCoordinates(QVector3D( 1.0, -1.0,  1.0));

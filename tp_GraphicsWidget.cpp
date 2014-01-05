@@ -23,7 +23,9 @@ namespace tp {
 
 
   QVector3D GraphicsWidget::toScreenCoordinates(QVector3D v) {
-    mCameraMatrix = Matrix::RotationMatrix(mRoll*DEGTORAD,mPitch*DEGTORAD,mYaw*DEGTORAD) +  Matrix::Translation(mCameraPosition);
+    mCameraMatrix = Matrix::RotationMatrix(mRoll*DEGTORAD,mPitch*DEGTORAD,mYaw*DEGTORAD);
+    mCameraMatrix = mCameraMatrix * Matrix::Translation(mCameraPosition);
+
     mProjection.setCameraMatrix(mCameraMatrix);
     mProjection.setModelMatrix(mModelMatrix);
     return mProjection.getScreenCoordinates(v);
@@ -41,26 +43,33 @@ namespace tp {
 
 
   void GraphicsWidget::paintTree() {
-
-    QPainter painter(this);
-
+    std::cout << "#TopLevelItems: " << mTree->topLevelItemCount() << std::endl;
     for (int i = 0; i < mTree->topLevelItemCount(); i++) {
+      std::cout << " - item " << i << std::endl;
       GraphicsItem* topItem = dynamic_cast<GraphicsItem*>(mTree->topLevelItem(i));
-      mModelMatrix = topItem->getMatrix();
-      topItem->draw(&painter);
-      for(int j = 0; j < topItem->childCount(); j++) {
-	GraphicsItem* item = dynamic_cast<GraphicsItem*>(topItem->child(j));
-	mModelMatrix = mModelMatrix*item->getMatrix();
-	item->draw(&painter);
-      }
-    }
-
-
-    
-    painter.end();
-
+      mModelMatrix = Matrix::Identity;
+      paintChildren(topItem);
+    }   
   }
 
+  void GraphicsWidget::paintChildren(GraphicsItem* item) {
+    
+    mModelMatrix = mModelMatrix*item->getMatrix();
+    std::cout << mModelMatrix << std::endl;
+    std::cout << "#Children: " << item->childCount() << std::endl;
+    QPainter painter(this);
+    item->draw(&painter);
+    painter.end();
+
+    if(item->childCount() < 1) return;
+
+    for(int j = 0; j < item->childCount(); j++) {
+      GraphicsItem* child = dynamic_cast<GraphicsItem*>(item->child(j));
+      paintChildren(child);
+    }
+    
+  }
+  
   void GraphicsWidget::paintOrigin() {
     QPainter painter(this);
     QVector3D origin = toScreenCoordinates( QVector3D( 0.0, 0.0, 0.0));
