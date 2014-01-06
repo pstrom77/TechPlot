@@ -15,7 +15,7 @@ namespace tp {
     mHeight = static_cast<double>(top-bottom);
     mWidth  = static_cast<double>(right-left);
 
-    const double zNear = 0.01;
+    const double zNear = 1.0;
     const double zFar = 1000.0;
     
     setOrtoProjection(0.0,   mWidth,mHeight,0.0,zNear,zFar);

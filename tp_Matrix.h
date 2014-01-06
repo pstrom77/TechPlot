@@ -32,6 +32,8 @@ namespace tp {
     static Matrix RotationX(double angle);
     static Matrix RotationY(double angle);
     static Matrix RotationZ(double angle);
+    static Matrix Scale(const QVector3D& v);
+    static Matrix Scale(double x, double y, double z);
     static Matrix Translation(double x,double y, double z);
     static Matrix Translation(const QVector3D& v);
     static void   Copy(const Matrix& from, Matrix* to); 
@@ -80,12 +82,17 @@ namespace tp {
     }
 
 
-  Matrix& rotateX(double angle);
-  Matrix& rotateY(double angle);
-  Matrix& rotateZ(double angle);
-  Matrix& translate(QVector3D v);
-      
     
+    Matrix& rotateX(double angle);
+    Matrix& rotateY(double angle);
+    Matrix& rotateZ(double angle);
+    Matrix& translate(const QVector3D& v);
+    Matrix& scale(const QVector3D& v);
+    
+    double roll() const;
+    double pitch() const;
+    double yaw() const;
+
     void setRotation(double roll, double pitch, double yaw) { 
       Matrix mat= RotationX(roll)*RotationY(pitch)*RotationZ(yaw); 
       for(int row = 0; row < 3; row++) {

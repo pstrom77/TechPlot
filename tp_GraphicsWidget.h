@@ -3,8 +3,8 @@
 
 #include <QtGui>
 #include <QWidget>
-#include <QTreeWidget>
 
+#include "tp_GraphicsTreeModel.h"
 #include "tp_Projection.h"
 #include "tp_Matrix.h"
 
@@ -17,11 +17,11 @@ namespace tp {
   public:
     GraphicsWidget(QWidget* parent=0);
 
-    //TODO: Change to model view control...setModel
-    void setTree(QTreeWidget* tree) { mTree = tree; }
+    void setModel(GraphicsTreeModel* tree) { mTree = tree; }
 
     QVector3D toScreenCoordinates(QVector3D);
-
+    
+    QSize sizeHint() const { return QSize(400,300);}
   protected:
     void paintEvent(QPaintEvent* event);
     void mousePressEvent(QMouseEvent* event);
@@ -43,8 +43,9 @@ namespace tp {
     QVector3D mCameraPosition;
     QPointF mLastMousePos;
 
-    QTreeWidget* mTree;
-    
+    GraphicsTreeModel* mTree;
+
+    QStack<Matrix> mModelMatrixStack;
   };
 
 }

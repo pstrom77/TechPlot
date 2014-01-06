@@ -4,8 +4,9 @@
 #include <QtCore>
 #include <QtGui>
 #include <QMainWindow.h>
-#include <QTreeWidget>
+#include <QTreeView>
 #include "tp_GraphicsWidget.h"
+#include "tp_GraphicsTreeModel.h"
 #include "tp_GraphicsItem.h"
 
 namespace tp {
@@ -15,11 +16,19 @@ namespace tp {
   public:
     explicit MainWindow();
 
-    GraphicsItem* addRoot(QString name);
-    GraphicsItem* addChild(QTreeWidgetItem* parent, QString name);
+  private slots:
+      void addItem();
+      void removeItem();
+      void propertyChanged(QObject*);
+
+  signals:
+      void propertyChanged();
   private:
-    GraphicsWidget* mGraphicsWidget;
-    QTreeWidget*  mTree;
+    void setupModel();
+  private:
+    GraphicsWidget*     mGraphicsWidget;
+    GraphicsTreeModel*  mTreeModel;
+    QTreeView*          mTreeView;
 
   };
   

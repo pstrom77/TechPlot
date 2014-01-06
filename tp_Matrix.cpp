@@ -64,6 +64,17 @@ namespace tp {
     return mat;
   }
 
+  Matrix Matrix::Scale(const QVector3D& v) {
+    return Scale(v.x(),v.y(),v.z());
+  }
+  Matrix Matrix::Scale(double x, double y, double z) {
+    Matrix mat = Matrix::Identity;
+    mat.get(0,0) = x;
+    mat.get(1,1) = y;
+    mat.get(2,2) = z;
+    return mat;
+  }
+
   Matrix Matrix::Translation(const QVector3D& v){
     return Translation(v.x(),v.y(),v.z());
   }
@@ -103,12 +114,34 @@ namespace tp {
     return *this;
   }
 
-  Matrix& Matrix::translate(QVector3D v) {
+  Matrix& Matrix::translate(const QVector3D& v) {
     Matrix mat = *this * Translation(v);
     Copy(mat,this);
     return *this;
   }
 
+  Matrix& Matrix::scale(const QVector3D& v) {
+    Matrix mat = *this * Scale(v);
+    Copy(mat,this);
+    return *this;
+  }
+
+  double Matrix::roll() const {
+    return qAtan2(get(2,1),get(2,2));    
+  }
+
+  double Matrix::pitch() const {
+    //    return qAtan2(-get(0,2),sqrt(get(0,0)*get(0,0) + get(0,1)*get(0,1)));
+    return qAsin(-get(0,2));
+  }
+
+  double Matrix::yaw() const {
+    // const double phi = roll();
+    // const double s1 = sin(phi);
+    // const double c1 = cos(phi);
+    // return qAtan2(s1*get(2,0)-c1*get(1,1),c1*get(1,1) -s1*get(2,1));
+    return qAtan2(get(0,1),get(0,0));
+  }
 
   
 }
